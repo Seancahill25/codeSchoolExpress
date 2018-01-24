@@ -7,6 +7,7 @@ var cities = {
    "Warwick": "Rhode Island",
    "New York City": "New York"
 }; 
+app.use(express.static('public'));
 
 app.param('name', function(req, res, next) {
    var name = req.params.name;
@@ -14,6 +15,7 @@ app.param('name', function(req, res, next) {
    req.cityName = city;
    next();
 });
+
 app.get('/cities', function(req, res){
     if (req.query.limit >= 0) { 
         res.json(cities.slice(0, req.query.limit));
@@ -23,6 +25,7 @@ app.get('/cities', function(req, res){
       res.json(Object.keys(cities));
    }
 });
+
 app.get("/cities/:name", function(req, res) {
    var description = cities[req.cityName];
    if (!description) {
@@ -31,7 +34,5 @@ app.get("/cities/:name", function(req, res) {
       res.json(description);
    }
 });
-
-app.use(express.static('public'));
 
 app.listen(process.env.PORT);
